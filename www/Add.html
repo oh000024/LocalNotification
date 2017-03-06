@@ -12,7 +12,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <!-- Include the compiled Ratchet CSS -->
     <link href="css/ratchet.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/custom.css">
+    <link href="css/index.css" rel="stylesheet">
 
 </head>
 
@@ -45,24 +45,41 @@
                 <input type="time" id="time" />
 -->
             </div>
+            <!--            <div class="input-row">-->
+            <form class="input-group">
+                <label>Repeat:</label>
+                <input type="radio" name="repeat" id="none" value="none" checked="checked" />
+                <label for="hour">None</label>
 
+                <input type="radio" name="repeat" id="hour" value="hour" />
+                <label for="hour">H</label>
+
+                <input type="radio" name="repeat" id="day" value="day" />
+                <label for="day">D</label>
+
+                <input type="radio" name="repeat" id="week" value="week" />
+                <label for="week">W</label>
+
+                <input type="radio" name="repeat" id="month" value="month" />
+                <label for="month">M</label>
+            </form>
+            <!--            </div>-->
         </form>
-        <!--        <div class="input-row">-->
-        <div class="iconradio">Icon: &nbsp;
-            <input type="radio" name="emotion" id="sad" />
-            <label for="sad"> <span class="icon icon-compose"></span></label>
 
-            <input type="radio" name="emotion" id="sad" />
-            <label for="sad"> <span class="icon icon-person"></span></label>
-            <!--            <label for="sad"><img src="img/Actresses.png"></label>-->
+        <form>
+            <!--            <div id="radio">Icon:-->
+            <label>Icon:</label>
+            <input type="radio" id="radio1" name="icontype" value="Animation" checked="checked">
+            <label for="radio1"><img src="img/Animation.png" /></label>
 
-            <input type="radio" name="emotion" id="happy" />
-            <label for="sad"> <span class="icon icon-edit"></span></label>
+            <input type="radio" id="radio2" name="icontype" value="Astronaut">
+            <label for="radio2"><img src="img/Astronaut.png" /></label>
 
-        </div>
-        <!--        </div>-->
+            <input type="radio" id="radio3" name="icontype" value="Batman%20New">
+            <label for="radio3"><img src="img/Batman%20New.png" /></label>
+            <!--            </div>-->
+        </form>
         <button id="btnAdd" class="btn btn-primary btn-block">Create Reminder</button>
-        <!--                <button id="btnAdd" class="btn btn-primary btn-block">Create Reminder</button>-->
     </div>
 
     <nav class="bar bar-tab">

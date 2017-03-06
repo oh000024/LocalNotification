@@ -108,7 +108,7 @@ var app = {
         let a = Date();
         //let rs = moment(a).add(1, 'hour');
         let t = moment().format('MMMM Do YYYY, H:mm a');
-        time.value = t; //moment().format('MMMM Do YYYY, h:mm:ss a');  
+        time.value = a; //moment().format('MMMM Do YYYY, h:mm:ss a');  
 
     },
     /*//////////////////////////////////////////////////////////////////////
@@ -137,19 +137,29 @@ var app = {
         let title = document.getElementById("title").value;
         let text = document.getElementById("msg").value;
         let time = document.getElementById("time").value;
-        var now = new Date().getTime(),
-            //_5_sec_from_now = moment().add(1, 'hour').format('MMMM Do YYYY, H:mm a'); //new Date(now + 20 * 1000);
-            // Temporarily 
-            _5_sec_from_now = new Date(now + 20 * 1000);
+        let now = new Date().getTime();
+        //_5_sec_from_now = moment().add(1, 'hour').format('MMMM Do YYYY, H:mm a'); //new Date(now + 20 * 1000);
+        // Temporarily 
+        let _5_sec_from_now = new Date(now + 20 * 1000);
 
         if (time == "" || title == "" || text == "") {
-            navigator.notification.alert("Please enter all details");
+            app.localNote.alert("Please enter all details");
             return;
         }
 
         var sound = device.platform == 'Android' ? 'file://sound.mp3' : 'file://beep.caf';
         let timestamp = Date.now();
         console.log("timestamp:" + " " + timestamp);
+
+        let iconSRadio = document.querySelector("input[name=icontype]:checked");
+        let iconSValue = iconSRadio ? iconSRadio.value : "";
+
+        if (iconSValue) {
+            iconSValue = "img/" + iconSValue + ".png";
+        }
+
+        let repeatSRadio = document.querySelector("input[name=repeat]:checked");
+        let repeatSValue = repeatSRadio ? repeatSRadio.value : "";
 
         app.localNote.hasPermission(function (granted) {
             if (granted == true) {
@@ -159,8 +169,9 @@ var app = {
                     title: title,
                     text: text,
                     at: _5_sec_from_now,
+                    every: repeatSValue ? repeatSValue.toString() : 0,
                     sound: sound,
-                    icon: "img/Animation.png",
+                    icon: iconSValue, //"img/Animation.png",
                     smallIcon: 'res://cordova',
                     badge: 2
                 });
@@ -219,7 +230,7 @@ var app = {
 
             let div = document.createElement("div");
             div.classList.add("media-body");
-            div.textContent = list.title + " " + list.at;
+            div.textContent = list.title + " " + Date(list.at);
 
             li.appendChild(span);
             li.appendChild(img);
