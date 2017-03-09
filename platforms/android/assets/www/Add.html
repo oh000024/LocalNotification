@@ -36,48 +36,48 @@
                 <input type="text" id="msg" placeholder="The message to the user" />
             </div>
 
-
             <div class="input-row">
                 <label>Time</label>
-                <input type="datetime-local" id="time" placeholder="2017-1-1 12:00pm" />
-                <!--
-                <input type="date" id="date" />
-                <input type="time" id="time" />
--->
+                <input type="datetime-local" id="time" placeholder="2017-03-08T15:37:14-05:00" value="2017-03-08T15:37:14-05:00" />
             </div>
-            <!--            <div class="input-row">-->
-            <form class="input-group">
-                <label>Repeat:</label>
-                <input type="radio" name="repeat" id="none" value="none" checked="checked" />
-                <label for="hour">None</label>
-
-                <input type="radio" name="repeat" id="hour" value="hour" />
-                <label for="hour">Hour</label>
-
-                <input type="radio" name="repeat" id="day" value="day" />
-                <label for="day">Day</label>
-
-                <input type="radio" name="repeat" id="week" value="week" />
-                <label for="week">Week</label>
-
-                <input type="radio" name="repeat" id="month" value="month" />
-                <label for="month">Month</label>
-            </form>
-            <!--            </div>-->
-
         </form>
 
-        <form>
-            <!--            <div id="radio">Icon:-->
+        <form class="input-radio">
+            <label>Repeat:</label>
+            <input type="radio" name="repeat" id="none" value="none" checked="checked" />
+            <label for="hour">None</label>
+            &nbsp;
+
+            <input type="radio" name="repeat" id="hour" value="hour" />
+            <label for="hour">H</label>
+
+            &nbsp;
+            <input type="radio" name="repeat" id="day" value="day" />
+            <label for="day">D</label>
+
+            &nbsp;
+            <input type="radio" name="repeat" id="week" value="week" />
+            <label for="week">W</label>
+
+            &nbsp;
+            <input type="radio" name="repeat" id="month" value="month" />
+            <label for="month">M</label>
+        </form>
+
+        <hr>
+        <form class="input-radio">
             <label>Icon:</label>
-            <input type="radio" id="radio1" name="icontype" value="Animation" checked="checked">
-            <label for="radio1"><img src="img/Animation.png" /></label>
+            <input type="radio" id="radio0" name="icontype" value="ic_stat_access_alarm" checked="checked">
+            <label for="radio1">Default</label>&nbsp;
 
-            <input type="radio" id="radio2" name="icontype" value="Astronaut">
-            <label for="radio2"><img src="img/Astronaut.png" /></label>
+            <input type="radio" id="radio1" name="icontype" value="ic_stat_avengers">
+            <label for="radio1"><img src="img/Avengers.png" /></label>&nbsp;
 
-            <input type="radio" id="radio3" name="icontype" value="Batman%20New">
-            <label for="radio3"><img src="img/Batman%20New.png" /></label>
+            <input type="radio" id="radio2" name="icontype" value="ic_stat_animation">
+            <label for="radio2"><img src="img/Animation.png" /></label>&nbsp;
+
+            <input type="radio" id="radio3" name="icontype" value="ic_stat_asteroid">
+            <label for="radio3"><img src="img/Asteroid.png" /></label>
             <!--            </div>-->
         </form>
         <button id="btnAdd" class="btn btn-primary btn-block">Create Reminder</button>
@@ -86,9 +86,9 @@
     <nav class="bar bar-tab">
         <a class="tab-item" href="index.html">
             <span class="icon icon-home"></span>
-            <span class="tab-label">Add</span>
+            <span class="tab-label">Home</span>
         </a>
-        <a class="tab-item active" href="#">
+        <a class="tab-item active" href="Add.html">
             <span class="icon icon-list"></span>
             <span class="tab-label">Add</span>
         </a>

@@ -1,34 +1,19 @@
+/*****************************************************************
+File: index.js
+Author: Jake Oh
+Description:
+Here is the sequence of logic for the app
+- On readying the device, create listenter in onDeviceReady function
+- pageChanged memeber function is for push event
+- showlist function is for showing lists of notifications
+- saveNew functions is for create new notification
+- deletelist function is for deleteing one list among lists on screen
+- createNewNotification function is involved when user click the button for creaeting a notification
+- callbackOpts function is creating Html element for ul and li and so on
+Version: 0.0.1
+Updated: Mar 5, 2017
+*****************************************************************/
 "use strict"
-var notifi = {
-    callbackOpts: function (notifications) {
-        console.log(notifications);
-    },
-
-    callbackSingleOpts: function (notification) {
-        console.log(notification);
-    },
-
-    get: function () {
-        cordova.plugins.notification.local.get(1, callbackSingleOpts);
-    },
-
-    getMultiple: function () {
-        cordova.plugins.notification.local.get([1, 2], callbackOpts);
-    },
-
-    getAll: function () {
-        cordova.plugins.notification.local.getAll(callbackOpts);
-    },
-
-    getScheduled: function () {
-        cordova.plugins.notification.local.getScheduled(callbackOpts);
-    },
-
-    getTriggered: function () {
-        cordova.plugins.notification.local.getTriggered(callbackOpts);
-    }
-
-};
 
 var app = {
     localNote: null,
@@ -41,37 +26,25 @@ var app = {
         }
     },
     onDeviceReady: function () {
+        //assing cordova.plugins.notification.local to variable
+        app.localNote = cordova.plugins.notification.local;
+
         //set up event listeners and default variable values
         window.addEventListener('push', app.pageChanged);
-        //cordova.plugins.notification.local
-        app.localNote = cordova.plugins.notification.local;
 
         app.localNote.on("click", function (notification) {
             console.log(notification.text);
+            //alert('click: ' + notification.title);
+            app.localNote.getAll(app.callbackOpts);
         });
 
         app.localNote.on('trigger', function (notification) {
-            alert('ontrigger: ' + notification.title);
-            //            console.log('notification ID :' + notification.id);
-            //            app.localNote.clear(notification.id, function() {
-            //                console.log('clear', notification.id);
-            //            });
-            //            let contentDiv = document.querySelector(".content");
-            //            let id = contentDiv.id;
-            //
-            //            if (id == "list") {
-            //                app.showList();
-            //            }
-
+            //alert('ontrigger: ' + notification.title);
         });
-        app.localNote.on('schedule', function (notification) {
-            console.log('onschedule', arguments, notification.id);
-        });
-
 
         //show the list when loading
-        console.log("Here is onDeviceReady");
-        //app.showList();
+        //console.log("Here is onDeviceReady");
+        app.showList();
     },
     pageChanged: function (ev) {
         //user has clicked a link in the tab menu and new page loaded
@@ -83,14 +56,12 @@ var app = {
 
         switch (id) {
         case "list":
-            console.log("Here is pageChanged");
+            //console.log("Here is pageChanged");
             app.showList();
             break;
         case "add":
             app.saveNew(ev);
             break;
-            // default:
-            //     createHtmlforProfile();
         }
     },
     showList: function () {
@@ -105,17 +76,19 @@ var app = {
         btn.addEventListener('click', app.createNewNotification);
         console.log("Second Page");
         let time = document.getElementById("time");
-        let a = Date();
-        //let rs = moment(a).add(1, 'hour');
-        let t = moment().format('MMMM Do YYYY, H:mm a');
-        time.value = a; //moment().format('MMMM Do YYYY, h:mm:ss a');  
+        let a = new Date();
 
+        time.value = moment(a, 'YYYY-MM-DD');
+        time.defaultValue = "2015-01-02T11:42:13.510";
+        let t = moment().format().split('-');
+        console.log(t[0] + t[1] + t[2]);
+        document.getElementById("time").value = t[0] + "-" + t[1] + "-" + t[2];
     },
-    /*//////////////////////////////////////////////////////////////////////
-    //
-    // Delete item clicked on lits
-    //
-    */ //////////////////////////////////////////////////////////////////////
+    /* To delete one among lists on the home page
+     * @namespace index.js
+     * @method deleteList
+     * @param {} scheduledItem - just in case, add it, but useless
+     */
     deleteList: function (e, scheduledItem) {
         let span = e.currentTarget;
         let li = e.currentTarget.parentNode;
@@ -138,12 +111,9 @@ var app = {
         let text = document.getElementById("msg").value;
         let time = document.getElementById("time").value;
         let now = new Date().getTime();
-        //_5_sec_from_now = moment().add(1, 'hour').format('MMMM Do YYYY, H:mm a'); //new Date(now + 20 * 1000);
-        // Temporarily 
-        let _5_sec_from_now = new Date(now + 20 * 1000);
 
         if (time == "" || title == "" || text == "") {
-            app.localNote.alert("Please enter all details");
+            alert("Please enter all details");
             return;
         }
 
@@ -155,7 +125,7 @@ var app = {
         let iconSValue = iconSRadio ? iconSRadio.value : "";
 
         if (iconSValue) {
-            iconSValue = "img/" + iconSValue + ".png";
+            iconSValue = iconSValue + ".png";
         }
 
         let repeatSRadio = document.querySelector("input[name=repeat]:checked");
@@ -163,40 +133,40 @@ var app = {
 
         app.localNote.hasPermission(function (granted) {
             if (granted == true) {
-                // schedule(id, title, message, schedule_time);
+
                 app.localNote.schedule({
                     id: timestamp,
                     title: title,
                     text: text,
-                    at: _5_sec_from_now,
+                    at: time.value,
                     every: repeatSValue ? repeatSValue.toString() : 0,
                     sound: sound,
-                    icon: iconSValue, //"img/Animation.png",
-                    smallIcon: 'res://cordova',
-                    badge: 2
+                    icon: iconSValue,
+
                 });
             } else {
                 app.localNote.registerPermission(function (granted) {
                     if (granted == true) {
-                        //schedule(id, title, message, schedule_time);
+
                         app.localNote.schedule({
                             id: timestamp,
                             title: title,
                             text: text,
-                            at: _5_sec_from_now,
+                            at: time.value,
+                            every: repeatSValue ? repeatSValue.toString() : 0,
                             sound: sound,
-                            icon: "http://3.bp.blogspot.com/-Qdsy-GpempY/UU_BN9LTqSI/AAAAAAAAAMA/LkwLW2yNBJ4/s1600/supersu.png",
-                            badge: 2
+                            icon: iconSValue,
                         });
-                    } else {
-                        navigator.notification.alert("Reminder cannot be added because app doesn't have permission");
                     }
                 });
             }
         });
 
-        //ev.currentTarget.removeEventListener('click', createNewNotification);
         console.log("id: " + app.localNote.schedule.id);
+
+        let home = document.querySelectorAll(".tab-item");
+        var event = new CustomEvent('click');
+        home[0].dispatchEvent(event);
     },
     /**
      * This is a description
@@ -207,44 +177,35 @@ var app = {
     callbackOpts: function (notifications) {
 
         let ul = document.querySelector('#list-notify');
-        console.log(notifications + " " + notifications.length);
+        //console.log(notifications + " " + notifications.length);
 
         ul.innerHTML = "";
-        //let ul = document.createElement("ul");
-        //ul.classList.add("table-vbiew");
         ul.style.listStyle = "none";
 
         //let listcontent = document.querySelector(".content");
         [].forEach.call(notifications, function (list) {
+            console.trace(list);
             let li = document.createElement("li");
             li.classList.add("table-view-cell", "media");
 
             let span = document.createElement("span");
             span.classList.add("media-object", "pull-left", "icon", "icon-trash");
 
-            let img = document.createElement("img");
-            img.classList.add("media-object", "pull-left");
-            img.src = list.icon;
-            img.style.width = "10%";
-            img.style.height = "10%";
-
             let div = document.createElement("div");
             div.classList.add("media-body");
-            div.textContent = list.title + " " + Date(list.at);
+            //console.log(list.every);
+            div.textContent = list.title + "  " + new Date(list.at * 1000);
+
+            console.log(div.textContent);
 
             li.appendChild(span);
-            li.appendChild(img);
             li.appendChild(div);
-
             ul.appendChild(li);
+
             span.addEventListener('click', function (e) {
                 app.deleteList(e, list);
             });
-
         });
-        //listcontent.appendChild(ul);
-
-        //showToast(notifications.length === 0 ? '- none -' : notifications.join(' ,'));
     }
 };
 

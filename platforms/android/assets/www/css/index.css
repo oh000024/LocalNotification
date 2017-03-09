@@ -7,3 +7,9 @@ div#radio img {
     width: 10%;
     height: 10%;
 }
+
+.input-radio {
+    /*    padding: 10px;*/
+    margin-top: 10px;
+    margin-left: 20px;
+}
